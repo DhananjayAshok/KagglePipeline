@@ -11,7 +11,8 @@ setuptools.setup(
     description="Pipelines and utility classes for Kaggle and data science!",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="",
+    url="https://github.com/DhananjayAshok/KagglePipeline",
+    download_url = "https://github.com/DhananjayAshok/KagglePipeline/archive/0.0.1.tar.gz",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

@@ -126,8 +126,10 @@ venv.bak/
 .spyproject
 
 # VS project settings
-.pyproj
-.sln
+*.pyproj
+*.sln
+.vs/
+/KagglePipeline.pyproj
 
 # Rope project settings
 .ropeproject
