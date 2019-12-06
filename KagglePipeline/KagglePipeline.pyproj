@@ -11,6 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>KagglePipeline</Name>
     <RootNamespace>KagglePipeline</RootNamespace>
+    <InterpreterId>Global|VisualStudio|Data Science</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,10 +22,42 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="augmentation\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="evaluation\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="KagglePipeline.py" />
+    <Compile Include="models\neural_networks\mlp\SimpleHiddenMLP.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\neural_networks\mlp\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\neural_networks\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="preprocessing\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="__init__.py">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="augmentation\" />
+    <Folder Include="evaluation\" />
+    <Folder Include="models\" />
+    <Folder Include="models\neural_networks\" />
+    <Folder Include="models\neural_networks\mlp\" />
+    <Folder Include="preprocessing\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|VisualStudio|Data Science" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
