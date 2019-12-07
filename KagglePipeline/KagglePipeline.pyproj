@@ -29,6 +29,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="KagglePipeline.py" />
+    <Compile Include="models\ModelBase.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="models\neural_networks\mlp\SimpleHiddenMLP.py">
       <SubType>Code</SubType>
     </Compile>
