@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/DhananjayAshok/KagglePipeline",
-    download_url = "https://github.com/DhananjayAshok/KagglePipeline/archive/0.0.2.tar.gz",
+    download_url = "https://github.com/DhananjayAshok/KagglePipeline/archive/0.03.tar.gz",
     packages=setuptools.find_packages(),
     install_requires=[
           'tensorflow',

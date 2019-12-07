@@ -5,7 +5,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.optimizers.schedules import ExponentialDecay
 from tensorflow.keras.losses import CategoricalCrossentropy, MeanSquaredError
 import matplotlib.pyplot as plt
-from models.ModelBase import ModelBase
+from ...ModelBase import ModelBase
 
 class SimpleHiddenMLP(ModelBase):
     """A Densely Connected Feed Forward MLP which can be used for most classification and regression tasks
