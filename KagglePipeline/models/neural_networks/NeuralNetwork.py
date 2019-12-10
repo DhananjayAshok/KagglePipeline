@@ -1,3 +1,4 @@
+from ..ModelBase import ModelBase
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Input
 from tensorflow.keras.optimizers import Adam
@@ -5,46 +6,29 @@ from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.optimizers.schedules import ExponentialDecay
 from tensorflow.keras.losses import CategoricalCrossentropy, MeanSquaredError
 import matplotlib.pyplot as plt
-from ...ModelBase import ModelBase
 
-class SimpleHiddenMLP(ModelBase):
-    """A Densely Connected Feed Forward MLP which can be used for most classification and regression tasks
-
-    Requirements:
-        X is a 2 dimensional DataFrame i.e is in table data format
-        y is either a single column of values if regression or a set of labels if classification
-    
-    Attributes
-    -------------
-    model : tf.model
-        Stores the model reference
-    classification: bool
-        True iff the network solves a classification problem
-        If false then it must be regression
-
-    Methods
-    -------------
-    predict(X: pd.DataFrame, y: pd.Series) -> np.ndarray
-        Predict the value from given data
-    
-
+class NeuralNetwork(ModelBase):
+    """Abstract MLP Implementation with fitting and predicting implemented
     """
-   
-
-    def __init__(self, X_train, y_train, classification, n_hidden = 32 ,optimizer=None, loss=None):
+    def __init__(self, classification, params={}, optimizer=None, initial_learning_rate = 0.001, loss=None):
         """
-        Returns a fit model with Input -> 32 Hidden Neurons -> Output for classification. Unless parameters are changed.
+        Returns a Feed Forward fit model with Input -> Hidden Neurons -> Output. Unless parameters are changed.
         Default Learning Rate Scheduling is an Adam optimizer with Exponential Decay off an initial learning rate of 0.001
         """
         self.classification = classification
-        self._create_model(X_train, y_train, n_hidden, classification, optimizer, loss)
+        self._create_param_dict(params, optimizer, initial_learning_rate, loss)
         return
 
-    def _create_model(self, X_train, y_train, n_hidden, classification, optimizer, loss):
-        
+    def _create_model(self, X_train, y_train):
+        classification = self.classification
+        optimizer = self.param_dict['optimizer']
+        initial_learning_rate = self.param_dict['initial_learning_rate']
+        loss = self.param_dict['loss']
+
+
         i = Input(shape=X_train.shape[1:])
-        x = Dense(X_train.shape[1], activation ="elu") (i)
-        x = Dense(n_hidden, activation= "relu") (x) 
+
+        x = self._create_internal_layers(i, X_train.shape, self.param_dict)
         
         l = None
         metrics = []
@@ -60,7 +44,6 @@ class SimpleHiddenMLP(ModelBase):
             x = Dense(n_outputs, activation = "relu") (x)
             l = MeanSquaredError()
 
-        initial_learning_rate = 0.001
         lr_schedule = ExponentialDecay(initial_learning_rate,decay_steps=100000,decay_rate=0.96, staircase=True)
         opt = Adam(learning_rate = lr_schedule)
 
@@ -76,13 +59,18 @@ class SimpleHiddenMLP(ModelBase):
               metrics=metrics)
         return 
 
-    def fit(self, X_train, y_train, x_val=None, y_val=None, epochs=200, early_stopping_patience=10):
+    def _create_internal_layers(self, i, X_train_shape, params):
+        raise NotImplementedError
+
+    def fit(self, X_train, y_train, x_val=None, y_val=None, epochs=200, early_stopping_patience=10, plot=False):
         """
         Fits data to the model
         Defaults:
             Epochs:200
             Early Stopping Patience: 10
         """
+        self._create_model(X_train, y_train)
+
         callbacks = []
         es = EarlyStopping(monitor='loss', patience=early_stopping_patience)
         validation_data=None
@@ -92,26 +80,26 @@ class SimpleHiddenMLP(ModelBase):
         callbacks.append(es)
         r = self.model.fit(X_train, y_train, epochs=epochs,callbacks=callbacks, validation_data=validation_data)
 
-
-        plt.plot(r.history['loss'], label='loss')
-        if(x_val is not None):
-            plt.plot(r.history['val_loss'], label='val_loss')
-
-        plt.title('Model loss')
-        plt.ylabel('Loss')
-        plt.xlabel('Epoch')
-        plt.legend(['Train', 'Test'], loc='upper left')
-        plt.show()
-
-        if (self.classification):
-            plt.plot(r.history['acc'], label='acc')
+        if(plot):
+            plt.plot(r.history['loss'], label='loss')
             if(x_val is not None):
-                plt.plot(r.history['val_acc'], label='val_acc')
-            plt.title('Model accuracy')
-            plt.ylabel('Accuracy')
+                plt.plot(r.history['val_loss'], label='val_loss')
+
+            plt.title('Model loss')
+            plt.ylabel('Loss')
             plt.xlabel('Epoch')
             plt.legend(['Train', 'Test'], loc='upper left')
             plt.show()
+
+            if (self.classification):
+                plt.plot(r.history['acc'], label='acc')
+                if(x_val is not None):
+                    plt.plot(r.history['val_acc'], label='val_acc')
+                plt.title('Model accuracy')
+                plt.ylabel('Accuracy')
+                plt.xlabel('Epoch')
+                plt.legend(['Train', 'Test'], loc='upper left')
+                plt.show()
         return
 
     def _get_num_categories(self, y):
@@ -120,7 +108,24 @@ class SimpleHiddenMLP(ModelBase):
     def predict(self, X):
         return self.model.predict(X)
 
+    def score(self, X, y):
+        """
+        If the net is a regressor then it will return r^2 loss of the predictions (This is what SKLearn uses)
+        If the net is a classifier then it will return accuracy
+        """
+        if self.classification:
+            return self.model.evaluate(X, y)
+        else:
+            from sklearn.metrics import r2_score
+            return r2_score(y, self.predict(X))
 
+
+    def _create_param_dict(self, params, optimizer, initial_learning_rate, loss):
+        params['optimizer'] = optimizer
+        params['initial_learning_rate'] = initial_learning_rate
+        params['loss'] = loss
+        self.param_dict = params
+        return
 
 
 

@@ -28,11 +28,44 @@
     <Compile Include="evaluation\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="exploration\table\CorrelationDiscoverer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="exploration\table\NanDiscoverer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="exploration\table\OutlierDiscoverer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="exploration\table\Utility.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="exploration\table\Visuals.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="exploration\table\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="exploration\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="KagglePipeline.py" />
     <Compile Include="models\ModelBase.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="models\neural_networks\mlp\SimpleHiddenMLP.py">
+    <Compile Include="models\neural_networks\cnn\InceptionCNN.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\neural_networks\cnn\SimpleCNN.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\neural_networks\cnn\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\neural_networks\NeuralNetwork.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\neural_networks\mlp\SimpleMLP.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="models\neural_networks\mlp\__init__.py">
@@ -41,10 +74,37 @@
     <Compile Include="models\neural_networks\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="models\svm\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="models\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="preprocessing\feature_selection\TreeSelector.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="preprocessing\feature_selection\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="preprocessing\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="rapid_deployment\MultipleModels.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="rapid_deployment\table\LinearModels.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="rapid_deployment\table\TreeModels.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="rapid_deployment\table\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="rapid_deployment\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="specialized\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="__init__.py">
@@ -54,10 +114,18 @@
   <ItemGroup>
     <Folder Include="augmentation\" />
     <Folder Include="evaluation\" />
+    <Folder Include="exploration\" />
+    <Folder Include="exploration\table\" />
     <Folder Include="models\" />
     <Folder Include="models\neural_networks\" />
+    <Folder Include="models\neural_networks\cnn\" />
     <Folder Include="models\neural_networks\mlp\" />
+    <Folder Include="models\svm\" />
     <Folder Include="preprocessing\" />
+    <Folder Include="preprocessing\feature_selection\" />
+    <Folder Include="rapid_deployment\" />
+    <Folder Include="rapid_deployment\table\" />
+    <Folder Include="specialized\" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|VisualStudio|Data Science" />
