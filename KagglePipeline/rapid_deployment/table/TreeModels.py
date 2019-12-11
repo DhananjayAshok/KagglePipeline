@@ -9,8 +9,14 @@ class TreeModels(MultipleModels):
         4. Gradient Boosting Decision Tree
         5. 
     """
-    def __init__(self, X_train, y_train, classification, extras=[]):
-        MultipleModels.__init__(self, X_train, y_train, classification, extras)
+    def __init__(self, classification, extras=[]):
+        """
+
+       Extras is a list of additional models that can be called to fit on all in format (model, string name of model)
+       
+
+        """
+        MultipleModels.__init__(self, classification, extras)
         return
 
     def _generate_model_list(self, classification):

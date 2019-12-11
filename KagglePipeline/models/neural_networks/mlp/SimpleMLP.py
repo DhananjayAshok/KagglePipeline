@@ -46,10 +46,46 @@ class SimpleMLP(NeuralNetwork):
 
 
 class SimpleMLPRegressor(SimpleMLP):
+    """A Densely Connected Feed Forward MLP which can be used for most regression tasks
+
+    Requirements:
+        X is a 2 dimensional DataFrame i.e is in table data format
+        y is either a single column of values if regression or a set of labels if classification
+    
+    Attributes
+    -------------
+    model : tf.model
+        Stores the model reference
+    
+    Methods
+    -------------
+    predict(X: pd.DataFrame, y: pd.Series) -> np.ndarray
+        Predict the value from given data
+    
+
+    """
     def __init__(self, n_hidden_neurons=32, optimizer=None, initial_learning_rate=0.001, loss=None):
         SimpleMLP.__init__(self, False, n_hidden_neurons, optimizer, initial_learning_rate, loss)
 
 class SimpleMLPClassifier(SimpleMLP):
+    """A Densely Connected Feed Forward MLP which can be used for most classification tasks
+
+    Requirements:
+        X is a 2 dimensional DataFrame i.e is in table data format
+        y is either a single column of values if regression or a set of labels if classification
+    
+    Attributes
+    -------------
+    model : tf.model
+        Stores the model reference
+
+    Methods
+    -------------
+    predict(X: pd.DataFrame, y: pd.Series) -> np.ndarray
+        Predict the value from given data
+    
+
+    """
     def __init__(self, n_hidden_neurons=32, optimizer=None, initial_learning_rate=0.001, loss=None):
         SimpleMLP.__init__(self, True, n_hidden_neurons, optimizer, initial_learning_rate, loss)
 

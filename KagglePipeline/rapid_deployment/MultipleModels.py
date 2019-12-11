@@ -4,7 +4,7 @@ class MultipleModels(object):
 
     
     """
-    def __init__(self, X_train, y_train, classification, extras=[]):
+    def __init__(self, classification, extras=[]):
         """
         Extras is a list of additional models that can be called to fit on all in format (model, string name of model)
         """
@@ -12,10 +12,9 @@ class MultipleModels(object):
         self._generate_model_list(classification)
         self.model_list.extend(extras)
         self.classification = classification
-        self._fit(X_train, y_train)
 
 
-    def _fit(self, X_train, y_train):
+    def fit(self, X_train, y_train):
         for model_tuple in self.model_list:
             model_tuple[0].fit(X_train, y_train)
 

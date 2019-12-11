@@ -7,8 +7,8 @@ class LinearModels(object):
         3. Ridge Regression
     
     """
-    def __init__(self, X_train, y_train, classification, extras=[]):
-        MultipleModels.__init__(self, X_train, y_train, classification, extras)
+    def __init__(self, classification, extras=[]):
+        MultipleModels.__init__(self, classification, extras)
         return
 
     def _generate_model_list(self, classification):
