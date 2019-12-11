@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="dj_kaggle_pipeline", # Replace with your own username
-    version="1.0.0",
+    version="1.0.1",
     author="Dhananjay Ashok",
     author_email="dhananjay.ashok99@gmail.com",
     description="Pipelines and utility classes for Kaggle and data science!",
