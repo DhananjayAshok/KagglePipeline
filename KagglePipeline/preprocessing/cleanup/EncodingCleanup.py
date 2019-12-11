@@ -1,3 +1,5 @@
+from ...exploration.table.Utility import guess_types
+
 
 def encode_categoricals(data, categoricals = None):
     """
