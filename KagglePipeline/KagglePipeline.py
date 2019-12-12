@@ -1,3 +1,6 @@
+def hello():
+    print("Hello")
+
 if __name__ == "__main__":
     from models.neural_networks.mlp.SimpleMLP import SimpleMLPRegressor
     from rapid_deployment.table.TreeModels import TreeModels
