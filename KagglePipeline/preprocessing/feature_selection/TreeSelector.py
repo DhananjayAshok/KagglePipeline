@@ -23,7 +23,7 @@ def randomforest_feature_importance(X_train, y_train, classification):
     return eli5.show_weights(perm, feature_names = val_X.columns.tolist(), top=7)
 
 
-def gradientboosted_feature_importance(X_train, y_train, classification):
+def gradientboosting_feature_importance(X_train, y_train, classification):
     """
     Fits a Gradient Boosted LGBM Tree to the data and prints an analysis of feature importance
     Returns a pandas DataFrame of feature importance

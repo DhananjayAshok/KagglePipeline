@@ -33,7 +33,7 @@ class NeuralNetwork(ModelBase):
         l = None
         metrics = []
         if(classification):
-            n_outputs = self._get_num_categories(y_train)
+            n_outputs = self._get_num_categories(y_train, in_ohe=True)
             x = Dense(n_outputs, activation = "softmax") (x)
 
             l = CategoricalCrossentropy()
@@ -68,7 +68,15 @@ class NeuralNetwork(ModelBase):
         Defaults:
             Epochs:200
             Early Stopping Patience: 10
+
+        Does not require y_train to be in one hot encoding as the fit function handles for that manually
         """
+
+        if (self.classification):
+            # If its not ohe make it
+            if y_train.shape == (len(y_train), ):
+                y_train = self._get_ohe_labels(y_train)
+
         self._create_model(X_train, y_train)
 
         callbacks = []
@@ -102,7 +110,13 @@ class NeuralNetwork(ModelBase):
                 plt.show()
         return
 
-    def _get_num_categories(self, y):
+    def _get_ohe_labels(self, y):
+        from keras.utils import to_categorical
+        return to_categorical(y)
+    
+    def _get_num_categories(self, y, in_ohe=False):
+        if in_ohe:
+            return y.shape[1]
         return len(set(y))
 
     def predict(self, X):
@@ -114,6 +128,8 @@ class NeuralNetwork(ModelBase):
         If the net is a classifier then it will return accuracy
         """
         if self.classification:
+            if(y.shape == (len(y), )):
+                y = self._get_ohe_labels(y)
             return self.model.evaluate(X, y)
         else:
             from sklearn.metrics import r2_score
