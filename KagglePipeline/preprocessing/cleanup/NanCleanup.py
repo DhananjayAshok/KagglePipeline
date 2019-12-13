@@ -68,7 +68,7 @@ def handle_test_nan_entries(train, test, mean_cols=[], median_cols=[], mode_cols
     skip_cols is for columns you want to manually handle with a different strategy and so should not be messed with in this run
     returns None. Is an inplace function
     """
-    l = _make_strategy_lists(data, mean_cols, median_cols, mode_cols, n_cols, skip_cols)
+    l = _make_strategy_lists(train, mean_cols, median_cols, mode_cols, n_cols, skip_cols)
     for i,strategy in enumerate(l):
         for col in strategy:
             val = None

@@ -77,6 +77,27 @@
     <Compile Include="models\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="preprocessing\cleanup\EncodingCleanup.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="preprocessing\cleanup\NanCleanup.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="preprocessing\cleanup\Utility.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="preprocessing\cleanup\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="preprocessing\feature_engineering\common.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="preprocessing\feature_engineering\Utility.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="preprocessing\feature_engineering\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="preprocessing\feature_selection\TreeSelector.py">
       <SubType>Code</SubType>
     </Compile>
@@ -104,6 +125,9 @@
     <Compile Include="specialized\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utility.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -118,6 +142,8 @@
     <Folder Include="models\neural_networks\cnn\" />
     <Folder Include="models\neural_networks\mlp\" />
     <Folder Include="preprocessing\" />
+    <Folder Include="preprocessing\cleanup\" />
+    <Folder Include="preprocessing\feature_engineering\" />
     <Folder Include="preprocessing\feature_selection\" />
     <Folder Include="rapid_deployment\" />
     <Folder Include="rapid_deployment\table\" />
