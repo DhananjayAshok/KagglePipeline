@@ -5,7 +5,7 @@ def encode_categoricals(data, categoricals = None):
     """
     Encode the categories using LabelEncoder and then return in the format (data, label_dict)
     data is the new dataframe after encoding,
-    label_dict stores each columns classes_ variable and is needed to reverse the encoding
+    label_dict stores each columns label encoder
     """
     from sklearn.preprocessing import LabelEncoder
     if categoricals is None:
@@ -15,7 +15,7 @@ def encode_categoricals(data, categoricals = None):
         print(f"Now encoding {cat}")
         le = LabelEncoder()
         data[cat] = le.fit_transform(data[cat])
-        d[cat] = le.classes_
+        d[cat] = le
     return data, d
 
 def encode_dataframe_with_dict(data, d):
@@ -27,14 +27,11 @@ def encode_dataframe_with_dict(data, d):
     for cat in d.keys():
         if cat not in data.columns:
             continue
-        def helper(x):
-            val = 0
-            try:
-                val = np.where(d[cat] == x)[0][0]
-            except ValueError:
-                raise ValueError(f"{x} was not found in encoded labels {d[cat]}. i.e new label encountered")
-            return val
-        data[cat] = data[cat].apply(helper)
+        try:
+            data[cat] = d[cat].transform(data[cat])
+        except:
+            print(f"There was an error with column {cat}. Likely new label encountered. Classes {d[cat].classes_} and unique labels are {set(data[cat])}")
+            print("You will have to manage this manually. Either encode it with your own method or clear the new labels and run this function again")
     return
 
 def decode_dataframe_categoricals(data, d):
@@ -46,9 +43,7 @@ def decode_dataframe_categoricals(data, d):
     for cat in d.keys():
         if cat not in data.columns:
             continue
-        def helper(x):
-            return d[cat][x]
-        data[cat] = data[cat].apply(helper)
+        data[cat] = d[cat].inverse_transform(data[cat])
     return
 
 def decode_single_value(value, col, d):
@@ -56,7 +51,7 @@ def decode_single_value(value, col, d):
     Decodes the value of a single object from a single column in the data
     Returns the value
     """
-    return d[col][val]
+    return d[col].inverse_transform([val])
 
 
 

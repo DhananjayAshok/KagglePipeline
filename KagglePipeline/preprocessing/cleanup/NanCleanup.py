@@ -1,6 +1,25 @@
 from ...exploration.table.Utility import guess_types
 
-def handle_nan_entries(data, mean_cols=[], mode_cols=[], n_cols=[], skip_cols=[]):
+def _make_strategy_lists(data, mean_cols, median_cols, mode_cols, n_cols, skip_cols):
+    numericals, strings, categoricals, dates = guess_types(data)
+    l = [numericals, strings, categoricals, dates]
+    for t in l:
+        for el in t:
+            if (el in mean_cols) or (el in mode_cols) or (el in median_cols) or(el in n_cols) or (el in skip_cols):
+                pass
+            else:
+                if (t == numericals):
+                    mean_cols = mean_cols + [el]
+                elif (t == strings):
+                    n_cols = n_cols + [el]
+                elif (t==categoricals):
+                    mode_cols = mode_cols + [el]
+                else:
+                    mode_cols = model_cols + [el]
+    l = [mean_cols, median_cols, mode_cols, n_cols]
+    return l
+
+def handle_nan_entries(data, mean_cols=[],median_cols=[], mode_cols=[], n_cols=[], skip_cols=[]):
     """
     Generic handling strategy for Nan entries in columns with 3 strategies
         fill with mean, 
@@ -14,37 +33,25 @@ def handle_nan_entries(data, mean_cols=[], mode_cols=[], n_cols=[], skip_cols=[]
     skip_cols is for columns you want to manually handle with a different strategy and so should not be messed with in this run
     returns None. Is an inplace function
     """
-    numericals, strings, categoricals, dates = guess_types(data)
-    l = [numericals, strings, categoricals, dates]
-    for t in l:
-        for el in t:
-            if (el in mean_cols) or (el in mode_cols) or (el in n_cols) or (el in skip_cols):
-                pass
-            else:
-                if (t == numericals):
-                    mean_cols.append(el)
-                elif (t == strings):
-                    n_cols.append(el)
-                elif (t==categoricals):
-                    mode_cols.append(el)
-                else:
-                    mode_cols.append(el)
-
-    l = [mean_cols, mode_cols, n_cols]
-    for strategy in l:
+    l = _make_strategy_lists(data, mean_cols, median_cols, mode_cols, n_cols, skip_cols)
+    for i, strategy in enumerate(l):
         for col in strategy:
             val = None
-            if(strategy == mean_cols):
+            if(i==0):
                 val = data[col].mean()
-            elif(strategy == mode_cols):
+            elif(i==1):
+                val = data[col].median()
+            elif(i==2):
                 val = data[col].mode()
-            elif(strategy == n_cols):
+            elif(i==3):
                 val = "N"
-
-            data[col].fillna(val, inplace=True)
+            if (i==4):
+                continue
+            else:
+                data[col].fillna(val, inplace=True)
     return
     
-def handle_test_nan_entries(train, test, mean_cols=[], mode_cols=[], n_cols=[], skip_cols=[]):
+def handle_test_nan_entries(train, test, mean_cols=[], median_cols=[], mode_cols=[], n_cols=[], skip_cols=[]):
     """
     Same as handle nan entries but meant for testing data, this will use the mode/mean of the training data to fill testing data to ensure integrity of statistics
     Do this step before you encode the training data in order to ensure that the guessing of numericals, categoricals, strings and dates works
@@ -61,31 +68,17 @@ def handle_test_nan_entries(train, test, mean_cols=[], mode_cols=[], n_cols=[], 
     skip_cols is for columns you want to manually handle with a different strategy and so should not be messed with in this run
     returns None. Is an inplace function
     """
-    numericals, strings, categoricals, dates = guess_types(train)
-    l = [numericals, strings, categoricals, dates]
-    for t in l:
-        for el in t:
-            if (el in mean_cols) or (el in mode_cols) or (el in n_cols) or (el in skip_cols):
-                pass
-            else:
-                if (t == numericals):
-                    mean_cols.append(el)
-                elif (t == strings):
-                    n_cols.append(el)
-                elif (t==categoricals):
-                    mode_cols.append(el)
-                else:
-                    mode_cols.append(el)
-
-    l = [mean_cols, mode_cols, n_cols]
-    for strategy in l:
+    l = _make_strategy_lists(data, mean_cols, median_cols, mode_cols, n_cols, skip_cols)
+    for i,strategy in enumerate(l):
         for col in strategy:
             val = None
-            if(strategy == mean_cols):
+            if(i == 0):
                 val = train[col].mean()
-            elif(strategy == mode_cols):
+            elif(i==1):
+                val = train[col].median()
+            elif(i==2):
                 val = train[col].mode()
-            elif(strategy == n_cols):
+            elif(i==3):
                 val = "N"
 
             test[col].fillna(val, inplace=True)

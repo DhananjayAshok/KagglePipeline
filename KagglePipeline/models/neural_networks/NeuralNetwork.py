@@ -6,6 +6,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.optimizers.schedules import ExponentialDecay
 from tensorflow.keras.losses import CategoricalCrossentropy, MeanSquaredError
 import matplotlib.pyplot as plt
+import numpy as np
 
 class NeuralNetwork(ModelBase):
     """Abstract MLP Implementation with fitting and predicting implemented
@@ -76,6 +77,8 @@ class NeuralNetwork(ModelBase):
             # If its not ohe make it
             if y_train.shape == (len(y_train), ):
                 y_train = self._get_ohe_labels(y_train)
+                if (y_val is not None):
+                    y_val = self._get_ohe_labels(y_val)
 
         self._create_model(X_train, y_train)
 
@@ -120,7 +123,18 @@ class NeuralNetwork(ModelBase):
         return len(set(y))
 
     def predict(self, X):
+        if self.classification:
+            return np.argmax(self.model.predict(x), axis=1)
         return self.model.predict(X)
+
+    def predict_proba(self, X):
+        """
+        Predict probabilities
+        """
+        if (self.classification):
+            return self.model.predict(X)
+        else:
+            raise RuntimeError("Calling PredictProba on a regression network is forbidden")
 
     def score(self, X, y):
         """
