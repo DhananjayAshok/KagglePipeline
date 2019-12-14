@@ -118,3 +118,59 @@ def drop_nan_columns(data, ratio=1.0):
     return data.drop(col_list, axis=1)
 
     
+def xgb_fillna(train, test, col_to_fill, classification, target_col, real_test=None):
+    """
+    Uses an XGB Regressor or Classifier to populate the Nan values of the dataframe.
+    Returns a list with train, test, real_test new dataframes with the Nans filled. or if real_test is none just returns train and test
+
+    -> Do this before splitting
+    -> Every other column in the dataframes should be ready to put into an XGBoost Model
+    -> If the column to fill is a classification / categorical then you must ensure that the non NaN values are numerically encoded and the NaN values are NaN (Not some constant N etc)
+    -> Assumes there are more than 2 columns in data and also assumes that the ordering of columns is the same in train, test and real_test
+    -> 
+    """
+    import pandas as pd
+    l = [train, test]
+    if real_test is not None:
+        l.append(real_test)
+    for d in range(len(l)):
+        l[d] = l[d][_col_list_adapter(l[d].columns.tolist(), col_to_fill, target_col)]
+    model = None
+    if (classification):
+        from xgboost import XGBClassifier
+        model = XGBClassifier()
+    else:
+        from xgboost import XGBRegressor
+        model = XGBRegressor()
+
+    temptotal = pd.concat(l, join="inner")
+    temptrain = temptotal.loc[temptotal[col_to_fill].notnull()]
+    y = temptrain[col_to_fill]
+    x = temptrain.drop(col_to_fill, axis=1)
+    model.fit(x,y)
+    for d in range(len(l)):
+        nans = l[d].loc[l[d][col_to_fill].isnull()]
+        nanx = nans.drop(col_to_fill, axis=1)
+        try:
+            nanx = nanx.drop(target_col, axis=1)
+        except:
+            pass
+        l[d].loc[l[d][col_to_fill].isnull(), col_to_fill] = model.predict(nanx)
+    return l
+
+
+
+
+
+
+
+def _col_list_adapter(cols, col_to_fill, target_col):
+    cols.remove(col_to_fill)
+    cols.insert(0, col_to_fill)
+    try:
+        cols.remove(target_col)
+        cols.insert(0, target_col)
+    except:
+        pass
+
+    return cols

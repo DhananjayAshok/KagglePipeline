@@ -56,5 +56,5 @@ class InceptionCNNRegressor(InceptionCNN):
 
 class InceptionCNNClassifier(InceptionCNN):
         def __init__(self, classification, conv2d_fmaps=16, final_dense=32 ,optimizer=None, initial_learning_rate=0.001, loss=None):
-        InceptionCNN.__init__(self, True, conv2d_fmaps=16, final_dense=32 ,optimizer=None, initial_learning_rate=0.001, loss=None)
+            InceptionCNN.__init__(self, True, conv2d_fmaps=16, final_dense=32 ,optimizer=None, initial_learning_rate=0.001, loss=None)
 
