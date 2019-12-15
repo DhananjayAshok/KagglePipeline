@@ -66,8 +66,8 @@ class SimpleMLPRegressor(SimpleMLP):
     
 
     """
-    def __init__(self, n_hidden_neurons=32, optimizer=None, initial_learning_rate=0.001, loss=None):
-        SimpleMLP.__init__(self, False, n_hidden_neurons, optimizer, initial_learning_rate, loss)
+    def __init__(self, hidden_shape=[32], optimizer=None, initial_learning_rate=0.001, loss=None):
+        SimpleMLP.__init__(self, False, hidden_shape=hidden_shape, optimizer=optimizer, initial_learning_rate=initial_learning_rate, loss=loss)
 
 class SimpleMLPClassifier(SimpleMLP):
     """A Densely Connected Feed Forward MLP which can be used for most classification tasks
@@ -88,7 +88,7 @@ class SimpleMLPClassifier(SimpleMLP):
     
 
     """
-    def __init__(self, n_hidden_neurons=32, optimizer=None, initial_learning_rate=0.001, loss=None):
-        SimpleMLP.__init__(self, True, n_hidden_neurons, optimizer, initial_learning_rate, loss)
+    def __init__(self, hidden_shape=[32], optimizer=None, initial_learning_rate=0.001, loss=None):
+        SimpleMLP.__init__(self, True, hidden_shape=hidden_shape, optimizer=optimizer, initial_learning_rate=initial_learning_rate, loss=loss)
 
 
