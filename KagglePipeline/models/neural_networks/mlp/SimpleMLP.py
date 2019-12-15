@@ -25,12 +25,13 @@ class SimpleMLP(NeuralNetwork):
     """
    
 
-    def __init__(self, classification, n_hidden_neurons=32 ,optimizer=None, initial_learning_rate=0.001, loss=None):
+    def __init__(self, classification, hidden_shape = [32] ,optimizer=None, initial_learning_rate=0.001, loss=None):
         """
-        Returns a fit model with Input -> 32 Hidden Neurons -> Output for classification. Unless parameters are changed.
+        Takes in hidden_shape argument: a list of format [layer0_n_neurons, layer1_n_neurons,......] with elu activation for all of them.
+        Returns a fit model with Input -> Hidden_Shape -> Output
         Default Learning Rate Scheduling is an Adam optimizer with Exponential Decay off an initial learning rate of 0.001
         """
-        params = {"n_hidden_neurons":n_hidden_neurons}
+        params = {"hidden_shape":hidden_shape}
         NeuralNetwork.__init__(self, classification, params, optimizer, initial_learning_rate, loss)
         return
 
@@ -38,9 +39,10 @@ class SimpleMLP(NeuralNetwork):
         """
         Hidden shape is in format [X_train.shape, hidden_shape]
         """
-
+        h_shape = params.get("hidden_shape", [32])
         x = Dense(X_train_shape[1], activation ="elu") (i)
-        x = Dense(params["n_hidden_neurons"], activation= "relu") (x) 
+        for layer in h_shape:
+            x = Dense(layer, activation= "relu") (x) 
         return x
 
 
