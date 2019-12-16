@@ -48,12 +48,14 @@ def encode_dataframe_with_dict(data, train, d):
         except:
             working = set(data[cat])
             print(f"There was an error with column {cat}. Likely new label encountered. Classes {d[cat].classes_} and new labels encountered {working.difference(set(d[cat].classes_))}")
-            print(f"You will have to manage this manually if you want to handle a special case. For now the function will encode all labels that do not fit the given classes to {len(data[cat].classes_)}")
+            print(f"You will have to manage this manually if you want to handle a special case. For now the function will encode all labels that do not fit the given classes to {len(d[cat].classes_)}")
             convoluted_string = "uNiQueOtHeRVaL"
             d[cat].classes_ = np.append(d[cat].classes_, convoluted_string) # The string is so convoluted because then no conflicts will occur with any actual values for sure. 
             def helper(x):
                 if x not in d[cat].classes_:
                     return convoluted_string
+                else:
+                    return x
             data[cat] = data[cat].transform(helper)
             data[cat] = d[cat].transform(data[cat])
     if d.get("dummy_data", []) != []:
